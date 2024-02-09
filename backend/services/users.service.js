@@ -12,14 +12,13 @@ const getUserProfile = async (req, res) => {
     const email = req.session.user.email;
 
     const userProfileResult = await pool.query(
-      `SELECT u.email, u.username, u.creation_date, a.country, a.city, a.street,
+      `SELECT u.email, u.username, u.creation_date,
               up.followers_count, up.following_count, up.posts_count, up.replies_count, up.reposts_count
        FROM users u
-       INNER JOIN addresses a ON u.email = a.email
-       INNER JOIN user_profile up ON u.id = up.user_id
+       LEFT JOIN user_profile up ON u.id = up.user_id
        WHERE u.email = $1;`,
       [email]
-    );
+    );    
 
     if (userProfileResult.rowCount > 0) {
       const userProfile = userProfileResult.rows[0];

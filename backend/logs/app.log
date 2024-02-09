@@ -204,3 +204,53 @@
 {"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-08T00:43:46.292Z"}
 {"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-08T00:55:04.401Z"}
 {"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-08T00:55:04.651Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-08T01:41:42.479Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-08T01:41:42.729Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-08T14:47:36.314Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-08T14:47:36.657Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-08T20:57:31.329Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-08T20:57:31.569Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-08T20:59:26.452Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-08T20:59:26.682Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-09T16:07:29.717Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-09T16:07:29.951Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-09T16:08:13.336Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-09T16:08:13.638Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-09T16:15:56.895Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-09T16:15:57.138Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [09/Feb/2024:16:18:37 +0000] \"POST /auth/login HTTP/1.1\" 200 199 \"-\" \"PostmanRuntime/7.36.1\"\n","timestamp":"2024-02-09T16:18:37.039Z"}
+{"level":"info","message":"::1 - - [09/Feb/2024:16:18:52 +0000] \"GET /user/profile HTTP/1.1\" 400 1434 \"-\" \"PostmanRuntime/7.36.1\"\n","timestamp":"2024-02-09T16:18:52.564Z"}
+{"level":"info","message":"PostgreSQL Connected","timestamp":"2024-02-09T16:42:46.294Z"}
+{"level":"info","message":"Server running on http://127.0.0.1:8080","timestamp":"2024-02-09T16:42:46.507Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.463Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.470Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.475Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.481Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.487Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.512Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.519Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.523Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.528Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.535Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.541Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.546Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.551Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.567Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.571Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.575Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.582Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.587Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.592Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.598Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.606Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.612Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.618Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.623Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.629Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.635Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.641Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.647Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.653Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.656Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.662Z"}
+{"level":"error","message":"PostgreSQL Connection Failed","timestamp":"2024-02-09T16:50:18.668Z"}
