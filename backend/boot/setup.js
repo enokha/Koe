@@ -16,7 +16,7 @@ const PORT = 8080;
 // MongoDB connection
 async function connectToMongoDB() {
   try {
-    const uri = 'mongodb+srv://account:<password>@cluster0.sfbjbpt.mongodb.net/?retryWrites=true&w=majority';
+    const uri = 'mongodb+srv://dnlmor:ahgase@cluster0.sfbjbpt.mongodb.net/?retryWrites=true&w=majority';
 
     await mongoose.connect(uri);
 
