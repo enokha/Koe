@@ -1,4 +1,3 @@
-// backend/services/tweet.service.js
 const Tweet = require('../models/tweetModel');
 
 class TweetService {
@@ -18,7 +17,7 @@ class TweetService {
 
   async getTweetsByUser(userId) {
     try {
-      const tweets = await Tweet.find({ userId }).populate('userId', 'username'); // Assuming you have a 'username' field in the User model
+      const tweets = await Tweet.find({ userId }).populate('userId', 'username'); 
       return tweets;
     } catch (error) {
       throw error;

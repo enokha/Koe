@@ -1,6 +1,3 @@
-// auth.service.js
-
-const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../boot/database/db_connect");
@@ -15,7 +12,6 @@ const signup = async (req, res) => {
   const hash = bcrypt.hashSync(password, 10);
 
   try {
-    // Insert into users table
     const result = await pool.query(
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
       [username, email, hash]
@@ -23,7 +19,6 @@ const signup = async (req, res) => {
 
     const user = result.rows[0];
 
-    // Insert into user_profile table
     const userProfileResult = await pool.query(
       "INSERT INTO user_profile (user_id, username) VALUES ($1, $2) RETURNING *",
       [user.id, username]
@@ -46,8 +41,14 @@ const signin = async (req, res) => {
   }
 
   try {
-    // Fetch user from the users table
-    const userResult = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    const userResult = await pool.query(
+      `SELECT u.id, u.username, u.email, u.phone_number, u.birthdate, u.language, u.country, u.gender,
+              up.followers_count, up.following_count, up.posts_count, up.replies_count, up.reposts_count, u.password
+       FROM users u
+       LEFT JOIN user_profile up ON u.id = up.user_id
+       WHERE u.email = $1;`,
+      [email]
+    );
 
     if (userResult.rowCount === 0) {
       return res.status(400).json({ message: "User not found" });
@@ -55,7 +56,6 @@ const signin = async (req, res) => {
 
     const user = userResult.rows[0];
 
-    // Compare passwords
     if (!bcrypt.compareSync(password, user.password)) {
       return res.status(400).json({ message: "Email or password don't match" });
     }
@@ -72,7 +72,7 @@ const signin = async (req, res) => {
       }
     );
 
-    return res.status(200).json({ token });
+    return res.status(200).json({ token, user });
   } catch (error) {
     console.error("Error while signing in:", error.message);
     return res.status(500).json({ error: "Failed to sign in" });
@@ -85,17 +85,23 @@ const getUser = async (req, res) => {
   }
 
   try {
-    const user = await userModel
-      .findById(req.session.user._id, {
-        password: 0,
-      })
-      .populate("messages");
+    const email = req.session.user.email;
 
-    if (!user) {
+    const userResult = await pool.query(
+      `SELECT u.id, u.username, u.email, u.phone_number, u.birthdate, u.language, u.country, u.gender,
+              up.followers_count, up.following_count, up.posts_count, up.replies_count, up.reposts_count
+       FROM users u
+       LEFT JOIN user_profile up ON u.id = up.user_id
+       WHERE u.email = $1;`,
+      [email]
+    );
+
+    if (userResult.rowCount > 0) {
+      const user = userResult.rows[0];
+      return res.status(200).json(user);
+    } else {
       return res.status(400).json({ message: "User not found" });
     }
-
-    return res.status(200).json(user);
   } catch (error) {
     console.error("Error while getting user from DB", error.message);
     return res.status(500).json({ error: "Failed to get user" });
