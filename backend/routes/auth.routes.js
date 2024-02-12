@@ -5,7 +5,7 @@ const authServices = require("../services/auth.service");
 
 router.post("/signup", authServices.signup);
 router.post("/login", authServices.signin);
-router.post("/profile", authServices.getUser);
+router.get("/profile", authServices.getUser);
 router.get("/logout", authServices.logout);
 
 module.exports = router;
