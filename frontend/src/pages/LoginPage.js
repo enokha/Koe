@@ -20,7 +20,6 @@ const LoginPage = () => {
       ? "solid 0px transparent"
       : "solid 2px white",
   });
-
   const registerButtonProps = useSpring({
     borderBottom: registrationFormStatus
       ? "solid 2px white"
@@ -30,7 +29,6 @@ const LoginPage = () => {
   const loginClicked = () => {
     setRegistrationFormStatus(false);
   };
-
   const registerClicked = () => {
     setRegistrationFormStatus(true);
   };

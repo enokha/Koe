@@ -40,7 +40,7 @@ const RegisterForm = () => {
                     position: "absolute",
                     left: "auto",
                     right: "10px",
-                    textIndent: "32px",
+                    textindent: "32px",
                     top: "100px",
                   }}
                 />
@@ -51,7 +51,7 @@ const RegisterForm = () => {
                     position: "absolute",
                     left: "auto",
                     right: "10px",
-                    textIndent: "32px",
+                    textindent: "32px",
                     top: "100px",
                   }}
                 />
