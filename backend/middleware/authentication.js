@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
   const token = req.header("Authorization");
 
   if (!token) {
-    return res.status(unauthorized).json({ error: "Unauthorized" });
+    return res.status(unauthorized).json({ error: "Unauthorizedyessir" });
   }
 
   try {
