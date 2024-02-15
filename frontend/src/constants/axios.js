@@ -1,30 +1,18 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
 
-// custom API fetching hook
-const useApi = (dataSource) => {
-  const [data, setData] = useState([]);
+const instance = axios.create({
+  baseURL: "http://localhost:8080",
+});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await axios.get(`${dataSource}`, {
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("user")).token
-            }`,
-          },
-        });
-        setData(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+// Add a response interceptor
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.log("Axios error:", error.message);
 
-    fetchData();
-  }, [dataSource]);
+    // Pass the error along
+    return Promise.reject(error);
+  }
+);
 
-  return { data };
-};
-
-export default useApi;
+export default instance;

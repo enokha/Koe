@@ -2,15 +2,15 @@ const jwt = require("jsonwebtoken");
 const { unauthorized } = require("../constants/statusCodes");
 const logger = require("./winston");
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const token = req.header("Authorization");
 
   if (!token) {
-    return res.status(unauthorized).json({ error: "Unauthorized" });
+    return res.status(unauthorized).json({ error: "Unauthorized: Token missing" });
   }
 
   try {
-    const decoded = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET_KEY);
+    const decoded = await jwt.verify(token.split(" ")[1], process.env.JWT_SECRET_KEY);
 
     req.user = decoded.user;
 
