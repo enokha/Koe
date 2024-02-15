@@ -1,79 +1,126 @@
 const statusCodes = require("../constants/statusCodes");
 const logger = require("../middleware/winston");
 const pool = require("../boot/database/db_connect");
+const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
-const editProfile = async (req, res) => {
-  try {
-    if (!req.session.user) {
-      return res.status(statusCodes.unauthorized).json({ error: "You are not authenticated" });
+const register = async (req, res) => {
+  const { email, username, password } = req.body;
+
+  if (!email || !username || !password) {
+    res.status(statusCodes.badRequest).json({ message: "Missing parameters" });
+  } else {
+    const client = await pool.connect();
+
+    try {
+      // Check if the username already exists
+      const usernameExists = await client.query(
+        "SELECT * FROM users WHERE username = $1;",
+        [username]
+      );
+
+      if (usernameExists.rowCount) {
+        return res
+          .status(statusCodes.userAlreadyExists)
+          .json({ message: "Username is already taken" });
+      }
+
+      const result = await client.query(
+        "SELECT * FROM users WHERE email = $1;",
+        [email]
+      );
+      if (result.rowCount) {
+        return res
+          .status(statusCodes.userAlreadyExists)
+          .json({ message: "User already has an account" });
+      } else {
+        await client.query("BEGIN");
+
+        // Insert data into the users table
+        const addedUser = await client.query(
+          `INSERT INTO users(email, username, password, phone_number, birthdate, language, country, gender, verified, creation_date)
+           VALUES ($1, $2, crypt($3, gen_salt('bf')), $4, $5, $6, $7, $8, $9, CURRENT_TIMESTAMP)
+           RETURNING id, email, username;`,
+          [
+            email,
+            username,
+            password,
+            req.body.phone_number,
+            req.body.birthdate,
+            req.body.language,
+            req.body.country,
+            req.body.gender,
+            false,
+          ]
+        );
+
+        // Generate JWT token
+        const token = jwt.sign(
+          { user: { id: addedUser.rows[0].id, email: addedUser.rows[0].email } },
+          process.env.JWT_SECRET_KEY,
+          {
+            expiresIn: "1h",
+          }
+        );
+
+        logger.info("USER ADDED", addedUser.rowCount);
+
+        res
+          .status(statusCodes.success)
+          .json({ token, username: addedUser.rows[0].username });
+        await client.query("COMMIT");
+      }
+    } catch (error) {
+      await client.query("ROLLBACK");
+      logger.error(error.stack);
+      res.status(statusCodes.queryError).json({
+        message: "Exception occurred while registering",
+      });
+    } finally {
+      client.release();
     }
-
-    const email = req.session.user.email;
-    const { newUsername, newPassword, newPhoneNumber, newBirthdate, newLanguage, newCountry, newGender } = req.body;
-
-    // Update username
-    const updatedUsername = await pool.query(`UPDATE users SET username = $1 WHERE email = $2;`, [newUsername, email]);
-
-    // Update password
-    const updatedPassword = await pool.query(`UPDATE users SET password = crypt($1, gen_salt('bf')) WHERE email = $2;`, [newPassword, email]);
-
-    // Update additional user data
-    const updatedAdditionalData = await pool.query(
-      `UPDATE users
-       SET phone_number = $1, birthdate = $2, language = $3, country = $4, gender = $5
-       WHERE email = $6;`,
-      [newPhoneNumber, newBirthdate, newLanguage, newCountry, newGender, email]
-    );
-
-    if (updatedUsername.rowCount > 0 || updatedPassword.rowCount > 0 || updatedAdditionalData.rowCount > 0) {
-      return res.status(statusCodes.success).json({ message: "Profile updated successfully" });
-    } else {
-      return res.status(statusCodes.notFound).json({ message: "User not found" });
-    }
-  } catch (error) {
-    logger.error(error.stack);
-    return res.status(statusCodes.internalServerError).json({ error: "Failed to update profile" });
   }
 };
 
-const logout = (req, res) => {
-  if (req.session.user) {
-    delete req.session.user;
-  }
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  console.log(email)
 
-  return res.status(statusCodes.success).json({ message: "Disconnected" });
-};
+  if (!email || !password) {
+    res.status(statusCodes.badRequest).json({ message: "Missing parameters" });
+  } else {
+    try {
+      const response = await axios.post("/users/login", {
+        email,
+        password,
+      });
 
-const deleteAccount = async (req, res) => {
-  try {
-    if (!req.session.user) {
-      return res.status(statusCodes.unauthorized).json({ error: "You are not authenticated" });
+      // Process the successful response from the server
+      const { token, username } = response.data;
+      req.session.user = {
+        email,
+      };
+
+      res.status(statusCodes.success).json({ token, username });
+    } catch (error) {
+      if (error.response && error.response.data) {
+        // Handle the error with response data
+        logger.error(error.response.data);
+        res.status(statusCodes.queryError).json({
+          message: "Exception occurred while logging in",
+        });
+      } else {
+        // Handle other types of errors
+        logger.error(error.message);
+        res
+          .status(statusCodes.queryError)
+          .json({ error: "Exception occurred while logging in" });
+      }
     }
-
-    const email = req.session.user.email;
-
-    const deleteUserResult = await pool.query("DELETE FROM users WHERE email = $1", [email]);
-
-    const deleteUserProfileResult = await pool.query(
-      "DELETE FROM user_profile WHERE user_id IN (SELECT id FROM users WHERE email = $1)",
-      [email]
-    );
-
-    if (deleteUserResult.rowCount > 0) {
-      delete req.session.user;
-
-      return res.status(statusCodes.success).json({ message: "Account deleted successfully" });
-    } else {
-      return res.status(statusCodes.notFound).json({ message: "User not found" });
-    }
-  } catch (error) {
-    logger.error(error.stack);
-    return res.status(statusCodes.internalServerError).json({ error: "Failed to delete account" });
   }
 };
 
 module.exports = {
-  editProfile,
-  logout,
-  deleteAccount,
+  register,
+  login,
 };

@@ -8,16 +8,18 @@ const useApi = (dataSource) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await axios.get(`${dataSource}`, {
+        const response = await axios.get(`${dataSource}`, {
           headers: {
             Authorization: `Bearer ${
               JSON.parse(localStorage.getItem("user")).token
             }`,
           },
         });
-        setData(data.data);
+
+        setData(response.data);
       } catch (error) {
-        console.log(error);
+        console.error("API Error:", error);
+        setData([]);
       }
     };
 
