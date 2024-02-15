@@ -9,6 +9,7 @@ const notFound = require('../middleware/notFound');
 const healthCheck = require('../middleware/healthCheck');
 const verifyToken = require('../middleware/authentication');
 const validator = require('../middleware/validator');
+require('dotenv').config();
 
 const app = express();
 const PORT = 8080;
@@ -16,7 +17,7 @@ const PORT = 8080;
 // MongoDB connection
 async function connectToMongoDB() {
   try {
-    const uri = 'mongodb+srv://dnlmor:ahgase@cluster0.sfbjbpt.mongodb.net/?retryWrites=true&w=majority';
+    const uri = process.env.MONGODB_URI;
 
     await mongoose.connect(uri);
 
