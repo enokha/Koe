@@ -1,5 +1,5 @@
 export const requests = {
-    login: "/login",
-    signup: "/login",
+    login: "auth/login",
+    signup: "auth/signup",
   };
   

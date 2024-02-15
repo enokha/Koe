@@ -18,9 +18,6 @@ const RegisterForm = () => {
     email: "",
     username: "",
     password: "",
-    country: "",
-    city: "",
-    street: "",
   });
 
   const togglePassword = (event) => {
@@ -35,10 +32,7 @@ const RegisterForm = () => {
     if (
       !user.email ||
       !user.password ||
-      !user.username ||
-      !user.country ||
-      !user.city ||
-      !user.street
+      !user.username
     ) {
       setMessage("Please fill all required fields");
     } else {
@@ -124,35 +118,6 @@ const RegisterForm = () => {
               )}
             </span>
           </span>
-        </div>
-      </div>
-      <div className="inputs-container">
-        <div className="input-container">
-          <label className="country">Country</label>
-          <input
-            type="text"
-            className="country"
-            value={user.country}
-            onChange={(e) => setUser({ ...user, country: e.target.value })}
-          />
-        </div>
-        <div className="input-container">
-          <label className="street">Street</label>
-          <input
-            type="text"
-            className="street"
-            value={user.street}
-            onChange={(e) => setUser({ ...user, street: e.target.value })}
-          />
-        </div>
-        <div className="input-container">
-          <label className="city">City</label>
-          <input
-            type="text"
-            className="city"
-            value={user.city}
-            onChange={(e) => setUser({ ...user, city: e.target.value })}
-          />
         </div>
       </div>
       <button className="submit" onClick={(e) => handleSubmit(e)}>
