@@ -1,23 +1,15 @@
 import React from 'react';
 import '../styles/HomePage.css';
-import TweetBox from './TweetBox';
-import Post from './Post';
+import { Routes, Route } from 'react-router-dom';
+import HomePage from '../pages/HomePage';
 
 const Feed = () => {
   return (
     <div className="feed">
-      <div className="feed__header">
-        <h2>Home</h2>
-      </div>
-      <TweetBox />
-      {/* Repeat this structure for other posts */}
-      <Post
-        username="Nature"
-        handle="@TheEarthsNature"
-        description="Let go man!"
-        // Add other post content properties
-      />
-      {/* ... (Other posts) */}
+      <Routes>
+        <Route path="/home" element={<HomePage />} />
+        {/* ... (Other routes) */}
+      </Routes>
     </div>
   );
 };

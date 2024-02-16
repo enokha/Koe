@@ -18,4 +18,9 @@ body, html {
   display: none;
 }
 
+/* Expand the content to fill the entire page */
+.homePage > * {
+  flex: 1;
+}
+
 /* Other existing styles remain unchanged */

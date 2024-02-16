@@ -1,18 +1,20 @@
+// SideBar.js
 import React from 'react';
-import "../styles/HomePage.css";
-import { faHome, faSearch, faBell, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { Link } from 'react-router-dom';
+import { faHome, faSearch, faBell, faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../styles/HomePage.css";
 
-const Sidebar = () => {
+const SideBar = () => {
   return (
     <div className="sideBar">
       <i className="icon-twitter"> K</i>
 
       {/* Sidebar Options */}
-      <div className="sidebarOption active">
+      <Link to="/home" className="sidebarOption active">
         <FontAwesomeIcon icon={faHome} />
         <h2>Home</h2>
-      </div>
+      </Link>
       <div className="sidebarOption">
         <FontAwesomeIcon icon={faSearch} />
         <h2>Search</h2>
@@ -26,6 +28,12 @@ const Sidebar = () => {
         <h2>Messages</h2>
       </div>
 
+      {/* User Profile Link */}
+      <Link to="/profile" className="sidebarOption">
+        <FontAwesomeIcon icon={faUser} />
+        <h2>Profile</h2>
+      </Link>
+
       {/* ... (Other sidebar options) */}
       
       <button className="sidebar__tweet">Tweet</button>
@@ -33,4 +41,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SideBar;
