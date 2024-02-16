@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { animated, useSpring } from "react-spring";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
@@ -26,9 +26,14 @@ const LoginPage = () => {
       : "solid 0px transparent",
   });
 
+  useEffect(() => {
+    console.log("LoginPage rendered or updated");
+  }, []); // Empty dependency array to run only once on mount
+
   const loginClicked = () => {
     setRegistrationFormStatus(false);
   };
+
   const registerClicked = () => {
     setRegistrationFormStatus(true);
   };

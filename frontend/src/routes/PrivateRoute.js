@@ -1,14 +1,23 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import useAppStateContext from "../hooks/useAppStateContext";
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ element }) => {
   const { appState } = useAppStateContext();
 
-  return appState?.isAuthenticated && appState?.user ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" />
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          appState?.isAuthenticated && appState?.user ? (
+            element
+          ) : (
+            <Navigate to="/login" replace={true} />
+          )
+        }
+      />
+    </Routes>
   );
 };
 
