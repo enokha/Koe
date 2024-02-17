@@ -13,7 +13,7 @@ const signup = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+      "INSERT INTO UserDatabase (username, email, password) VALUES ($1, $2, $3) RETURNING *",
       [username, email, hash]
     );
 

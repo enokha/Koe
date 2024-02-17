@@ -1,11 +1,15 @@
+// index.js located in /Koe/backend/index.js
+
 require("dotenv").config();
-const startApp = require("./boot/setup").startApp;
+const startApp = require("./boot/setup"); 
+
+// Destructure the startApp function
 
 (async () => {
   try {
     await startApp();
   } catch (error) {
     console.log("Error in index.js => startApp");
-    console.log(`Error; ${JSON.stringify(error, undefined, 2)}`);
+    console.error(error); // Prints the error stack
   }
 })();
