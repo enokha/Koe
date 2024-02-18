@@ -17,6 +17,10 @@ const PrivateRoute = ({ element }) => {
           )
         }
       />
+      {/* Additional Route for profile redirection (if needed) */}
+      {appState?.isAuthenticated && appState?.user && (
+        <Route path="/profile/*" element={<Navigate to="/profile" replace={true} />} />
+      )}
     </Routes>
   );
 };

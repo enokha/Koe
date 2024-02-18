@@ -9,7 +9,7 @@ const PublicRoute = () => {
     <Outlet />
   ) : (
     <><Navigate to="/home" replace={true} />
-    <Navigate to="/profile" replace={true} /></>
+    </>
   );
 };
 

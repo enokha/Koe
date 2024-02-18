@@ -1,39 +1,56 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
-import "../styles/Profile.css";
+import React, { useState, useEffect } from 'react';
+import UserProfileHeader from '../components/UserProfileHeader';
+import FollowStats from '../components/FollowStats';
+import UserPosts from '../components/UserPosts';
+import instance from '../constants/axios';
+import { requests } from '../constants/requests';
+import '../styles/Profile.css';
 
-const UserProfile = () => {
+const UserProfile = ({ userId }) => {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await instance.get(requests.getUserProfile + `/${userId}`);
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [userId]);
+
+  const handleFollow = async () => {
+    try {
+      await instance.post(requests.followUser + `/${userId}`);
+      const response = await instance.get(requests.getUserProfile + `/${userId}`);
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error handling follow:', error);
+    }
+  };
+
   return (
     <div className="profile-container">
-      <div className="profile-header">
-        <img
-          src="https://via.placeholder.com/150"
-          alt="Profile Picture"
-          className="profile-picture"
-        />
-        <div className="user-info">
-          <h2 className="username">John Doe</h2>
-          <p className="handle">@johndoe</p>
-          <p className="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <div className="additional-info">
-            <FontAwesomeIcon icon={faMapMarkerAlt} />
-            <span className="location">New York, NY</span>
-            <FontAwesomeIcon icon={faCalendarAlt} />
-            <span className="joined-date">Joined September 2023</span>
-          </div>
-        </div>
-      </div>
-      <div className="follow-stats">
-        <div>
-          <span className="count">100</span>
-          <span className="label">Followers</span>
-        </div>
-        <div>
-          <span className="count">200</span>
-          <span className="label">Following</span>
-        </div>
-      </div>
+      {userData && (
+        <>
+          <UserProfileHeader
+            username={userData.username}
+            handle={userData.handle}
+            profileImage={userData.profileImage}
+            coverPhoto={userData.coverPhoto}
+          />
+          <FollowStats
+            followersCount={userData.followersCount}
+            followingCount={userData.followingCount}
+            postsCount={userData.postsCount}
+          />
+          <UserPosts userPosts={userData.posts} />
+          <button onClick={handleFollow}>Follow</button>
+        </>
+      )}
     </div>
   );
 };

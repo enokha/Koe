@@ -33,6 +33,22 @@ const userProfileSchema = new mongoose.Schema({
   dateOfBirth: {
     type: Date,
   },
+  joinedDate: {
+    type: Date,
+    default: Date.now,
+  },
+  postsCount: {
+    type: Number,
+    default: 0,
+  },
+  repliesCount: {
+    type: Number,
+    default: 0,
+  },
+  repostsCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model('UserProfile', userProfileSchema);
