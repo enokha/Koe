@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import useAppStateContext from "../hooks/useAppStateContext";
+import { useSelector } from 'react-redux';
 
 const PrivateRoute = ({ element }) => {
-  const { appState } = useAppStateContext();
+  const appState = useSelector(state => state.user);
 
   return (
     <Routes>
