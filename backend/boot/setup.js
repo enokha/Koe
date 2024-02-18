@@ -30,7 +30,7 @@ async function connectToMongoDB() {
 // Import routes
 const authRoutes = require('../routes/auth.routes');
 const tweetRoutes = require('../routes/tweet.routes');
-const userRoutes = require('../routes/users.routes');
+const profileRoutes = require('../routes/profile.routes');
 
 // MIDDLEWARE
 const registerCoreMiddleware = async () => {
@@ -58,7 +58,7 @@ const registerCoreMiddleware = async () => {
     // Use your routes
     app.use('/auth', authRoutes);
     app.use('/tweets', tweetRoutes);
-    app.use('/users', userRoutes);
+    app.use('/profile', profileRoutes);
 
     app.use(verifyToken);
 

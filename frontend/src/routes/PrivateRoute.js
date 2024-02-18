@@ -1,14 +1,27 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import useAppStateContext from "../hooks/useAppStateContext";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
-const PrivateRoute = () => {
-  const { appState } = useAppStateContext();
+const PrivateRoute = ({ element }) => {
+  const appState = useSelector(state => state.user);
 
-  return appState?.isAuthenticated && appState?.user ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" />
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          appState?.isAuthenticated && appState?.user ? (
+            element
+          ) : (
+            <Navigate to="/login" replace={true} />
+          )
+        }
+      />
+      {/* Additional Route for profile redirection (if needed) */}
+      {appState?.isAuthenticated && appState?.user && (
+        <Route path="/profile/*" element={<Navigate to="/profile" replace={true} />} />
+      )}
+    </Routes>
   );
 };
 

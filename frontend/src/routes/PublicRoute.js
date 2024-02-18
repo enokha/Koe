@@ -1,14 +1,14 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import useAppStateContext from "../hooks/useAppStateContext";
+import { useSelector } from 'react-redux';
 
 const PublicRoute = () => {
-  const { appState } = useAppStateContext();
+  const appState = useSelector(state => state.user);
 
   return !appState?.isAuthenticated && !appState?.user ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/home" replace={true} />
   );
 };
 

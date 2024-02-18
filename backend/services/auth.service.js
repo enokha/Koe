@@ -116,9 +116,32 @@ const logout = (req, res) => {
   return res.status(200).json({ message: "Disconnected" });
 };
 
+const updateUser = async (req, res) => {
+  const userId = req.session.user._id;
+  const { username, email, phoneNumber, birthdate, language, country, gender } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE users 
+       SET username = $1, email = $2, phone_number = $3, birthdate = $4, language = $5, country = $6, gender = $7
+       WHERE id = $8
+       RETURNING *`,
+      [username, email, phoneNumber, birthdate, language, country, gender, userId]
+    );
+
+    const user = result.rows[0];
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error while updating user:", error.message);
+    return res.status(500).json({ message: "Failed to update user" });
+  }
+};
+
 module.exports = {
   signup,
   signin,
   getUser,
+  updateUser,
   logout,
 };

@@ -1,4 +1,7 @@
 export const requests = {
   login: "/auth/login",
-  signup: "/auth/register",
+  signup: "/auth/signup",
+  logout:"/auth/logout",
+  updateProfile: "/auth/settings",
+  getUser:"/auth/:UserId",
 };

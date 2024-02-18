@@ -3,62 +3,58 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import instance from "../constants/axios";
 import { requests } from "../constants/requests";
-import useAppStateContext from "../hooks/useAppStateContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/actions/userActions';
+import { Navigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const { dispatch } = useAppStateContext();
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
   const [showPass, setShowPass] = useState(false);
-
   const [user, setUser] = useState({
     email: "",
     username: "",
     password: "",
   });
 
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+
   const togglePassword = (event) => {
     event.preventDefault();
-
     setShowPass(!showPass);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (
-      !user.email ||
-      !user.password ||
-      !user.username
-    ) {
+    if (!user.email || !user.password || !user.username) {
       setMessage("Please fill all required fields");
     } else {
-      instance
-        .post(requests.signup, user)
-        .then((response) => {
-          console.log(response);
-          dispatch({
-            type: "Login",
-            payload: {
-              token: response.data.token,
-              email: user.email,
-              username: user.username,
-            },
-          });
-          navigate("/home");
-        })
-        .catch((error) => {
-          console.log(error);
-          setMessage(error.response.data.message);
-        });
+      try {
+        const response = await instance.post(requests.signup, user);
+
+        dispatch(login({
+          token: response.data.token,
+          email: user.email,
+          username: user.username,
+        }));
+
+        setMessage("");
+        setRegisterSuccess(true);
+
+        navigate("/login");
+      } catch (error) {
+        console.error("Registration Error:", error);
+        setMessage(error.response.data.message);
+      }
     }
   };
 
   return (
-    <React.Fragment>
+    <>
       <div className="inputs-container">
         <div className="input-container">
           <label id="firstname">username</label>
@@ -100,7 +96,7 @@ const RegisterForm = () => {
                     position: "absolute",
                     left: "auto",
                     right: "10px",
-                    textindent: "32px",
+                    textIndent: "32px",
                     top: "100px",
                   }}
                 />
@@ -111,7 +107,7 @@ const RegisterForm = () => {
                     position: "absolute",
                     left: "auto",
                     right: "10px",
-                    textindent: "32px",
+                    textIndent: "32px",
                     top: "100px",
                   }}
                 />
@@ -121,14 +117,16 @@ const RegisterForm = () => {
         </div>
       </div>
       <button className="submit" onClick={(e) => handleSubmit(e)}>
-        submit
+        Submit
       </button>
       <span
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
       >
         {message}
       </span>
-    </React.Fragment>
+
+      {registerSuccess && <Navigate to="/login" replace={true} />}
+    </>
   );
 };
 

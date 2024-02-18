@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { animated, useSpring } from "react-spring";
+import { useSelector } from "react-redux"; // Import the useSelector hook from react-redux
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
-import "../styles/Login.css";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [registrationFormStatus, setRegistrationFormStatus] = useState(false);
+  const appState = useSelector((state) => state.user); // Use useSelector to access state.user
 
   const loginProps = useSpring({
     left: registrationFormStatus ? -500 : 0,
@@ -26,11 +28,17 @@ const LoginPage = () => {
       : "solid 0px transparent",
   });
 
-  const loginClicked = () => {
-    setRegistrationFormStatus(false);
-  };
-  const registerClicked = () => {
-    setRegistrationFormStatus(true);
+  const navigate = useNavigate(); // Use useNavigate hook to navigate
+
+  // Use useEffect to set the initial registration form status based on some condition
+  useEffect(() => {
+    setRegistrationFormStatus(!appState.isAuthenticated);
+  }, [appState.isAuthenticated]);
+
+  // Handle successful login and navigate to home page
+  const handleSuccessfulLogin = () => {
+    console.log("Login successful!"); // You can customize this message
+    navigate("/home");
   };
 
   return (
@@ -39,14 +47,14 @@ const LoginPage = () => {
         <div className="nav-buttons">
           <animated.button
             id="loginButton"
-            onClick={loginClicked}
+            onClick={() => setRegistrationFormStatus(false)}
             style={loginButtonProps}
           >
             Login
           </animated.button>
           <animated.button
             id="registerButton"
-            onClick={registerClicked}
+            onClick={() => setRegistrationFormStatus(true)}
             style={registerButtonProps}
           >
             Register
@@ -54,7 +62,8 @@ const LoginPage = () => {
         </div>
         <div className="form-group">
           <animated.form action="" id="loginform" style={loginProps}>
-            <LoginForm />
+            {/* Pass handleSuccessfulLogin to LoginForm */}
+            <LoginForm onSuccessfulLogin={handleSuccessfulLogin} />
           </animated.form>
           <animated.form action="" id="registerform" style={registerProps}>
             <RegisterForm />
