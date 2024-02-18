@@ -1,6 +1,6 @@
 export const requests = {
   login: "/auth/login",
-  signup: "/auth/register",
+  signup: "/auth/signup",
   logout:"/auth/logout",
   profile:"/profile/:UserId",
 };
