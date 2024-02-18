@@ -8,7 +8,8 @@ const PublicRoute = () => {
   return !appState?.isAuthenticated && !appState?.user ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" />
+    <><Navigate to="/home" replace={true} />
+    <Navigate to="/profile" replace={true} /></>
   );
 };
 
