@@ -6,7 +6,7 @@ import { requests } from "../constants/requests";
 import useAppStateContext from "../hooks/useAppStateContext";
 
 const UpdateForm = () => {
-  const { dispatch, state } = useAppStateContext();
+  const { dispatch } = useAppStateContext();
   const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -17,7 +17,6 @@ const UpdateForm = () => {
   const [showPass, setShowPass] = useState(false);
 
   useEffect(() => {
-    // Fetch user details when component mounts
     const fetchUserDetails = async () => {
       try {
         const response = await instance.get(requests.getUser);
@@ -35,12 +34,10 @@ const UpdateForm = () => {
     fetchUserDetails();
   }, []);
 
-  // Function to toggle password visibility
   const togglePassword = () => {
     setShowPass(!showPass);
   };
 
-  // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -54,7 +51,6 @@ const UpdateForm = () => {
       });
       setMessage(response.data.message);
 
-      // Dispatch action to update user context with new details
       dispatch({
         type: "UpdateUser",
         payload: {

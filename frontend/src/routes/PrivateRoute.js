@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import useAppStateContext from "../hooks/useAppStateContext";
 
 const PrivateRoute = ({ element }) => {
-  const appState = useSelector(state => state.user);
+  const { appState } = useAppStateContext();
 
   return (
     <Routes>
@@ -17,10 +17,6 @@ const PrivateRoute = ({ element }) => {
           )
         }
       />
-      {/* Additional Route for profile redirection (if needed) */}
-      {appState?.isAuthenticated && appState?.user && (
-        <Route path="/profile/*" element={<Navigate to="/profile" replace={true} />} />
-      )}
     </Routes>
   );
 };
