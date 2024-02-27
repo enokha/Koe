@@ -4,16 +4,16 @@ const { getUserProfileById, updateUserProfile } = require('../services/profile.s
 
 // Get user profile by userId
 router.get('/:userId', async (req, res) => {
-    const userId = req.params.userId;
-  
-    try {
-      const userProfile = await profileService.getProfileData(userId);
-      res.json(userProfile);
-    } catch (error) {
-      console.log('Error fetching user profile:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+  const userId = req.params.userId;
+
+  try {
+    const userProfile = await getUserProfileById(userId);
+    res.json(userProfile);
+  } catch (error) {
+    console.log('Error fetching user profile:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // Update user profile
 router.put('/:userId', async (req, res) => {

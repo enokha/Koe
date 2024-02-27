@@ -1,11 +1,15 @@
-// SideBar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { faHome, faSearch, faBell, faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../styles/HomePage.css";
+import useAppStateContext from '../hooks/useAppStateContext';
 
 const SideBar = () => {
+  const { appState } = useAppStateContext();
+
+  console.log('Current User:', appState.user);
+
   return (
     <div className="sideBar">
       <Link to="/home" className="sidebarOption active">
@@ -28,7 +32,6 @@ const SideBar = () => {
         <FontAwesomeIcon icon={faUser} />
         <h2>Profile</h2>
       </Link>
-      <button className="sidebar__tweet">Tweet</button>
     </div>
   );
 };

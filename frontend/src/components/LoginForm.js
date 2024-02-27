@@ -1,47 +1,60 @@
-import React, { useState } from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import instance from "../constants/axios";
 import { requests } from "../constants/requests";
-import { login } from '../redux/actions/userActions';
+import useAppStateContext from "../hooks/useAppStateContext";
 
 const LoginForm = () => {
-  const dispatch = useDispatch();
+  const { dispatch } = useAppStateContext();
   const navigate = useNavigate();
+
   const [message, setMessage] = useState("");
-  const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
 
+  // Function to toggle password visibility
   const togglePassword = (event) => {
     event.preventDefault();
     setShowPass(!showPass);
   };
 
-  const authentication = async () => {
-    try {
-      const response = await instance.post(requests.login, {
-        email,
-        password,
-      });
+  // Function to handle authentication
+  const authentication = async (event) => {
+    event.preventDefault();
 
-      const { token, user } = response.data;
+    if (!email || !password) {
+      setMessage("Please fill all required fields");
+    } else {
+      try {
+        // Use instance.post for the request
+        const response = await instance.post(requests.login, {
+          email: email,
+          password: password,
+        });
 
-      dispatch(login(token, user.email, user.username));
-
-      setMessage("");
-      // Navigate to the home page upon successful login
-      navigate("/home");
-    } catch (error) {
-      console.log("Authentication Error:", error);
-      setMessage("User not found");
+        // Dispatch login action and navigate to home
+        dispatch({
+          type: "Login",
+          payload: {
+            token: response.data.token,
+            email: email,
+            username: response.data.username,
+          },
+        });
+        navigate("/home");
+      } catch (error) {
+        // Handle errors and update the message state
+        console.log(error);
+        setMessage(error.response?.data?.message || "An error occurred");
+      }
     }
   };
 
   return (
-    <>
+    <React.Fragment>
       <label className="email">Email</label>
       <input
         type="text"
@@ -75,7 +88,7 @@ const LoginForm = () => {
       >
         {message}
       </span>
-    </>
+    </React.Fragment>
   );
 };
 
